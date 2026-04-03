@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phrasal Verbs — Homework</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1814;
+    --ink-2: #4a4640;
+    --ink-3: #8a8680;
+    --surface: #faf9f6;
+    --surface-2: #f0ede6;
+    --surface-3: #e4e0d8;
+    --accent: #c8501a;
+    --accent-light: #f5ece6;
+    --correct: #1a6640;
+    --correct-light: #e6f2ec;
+    --wrong: #a32020;
+    --wrong-light: #fceaea;
+    --blue: #1a4fa0;
+    --blue-light: #e8eef8;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--surface);
+    color: var(--ink);
+    line-height: 1.7;
+    padding: 2.5rem 1.5rem 4rem;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+  .main-title {
+    font-family: var(--serif);
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+  }
+  .main-title em { font-style: italic; }
+  .subtitle {
+    font-size: 14px;
+    color: var(--ink-2);
+    max-width: 520px;
+    line-height: 1.6;
+  }
+
+  /* VERB REFERENCE BOX */
+  .ref-box {
+    background: white;
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .ref-title {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 1rem;
+  }
+  .verb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+  }
+  .verb-item {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .verb-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .verb-meaning {
+    font-size: 12px;
+    color: var(--ink-2);
+  }
+
+  /* SECTION */
+  .section { margin-bottom: 3rem; }
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--surface-3);
+  }
+  .section-instruction {
+    font-size: 13px;
+    color: var(--ink-2);
+    font-style: italic;
+    margin-bottom: 1.25rem;
+  }
+
+  /* EXERCISE CARD */
+  .ex-card {
+    background: white;
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .ex-num {
+    background: var(--surface-2);
+    padding: 8px 16px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-bottom: 1px solid var(--surface-3);
+  }
+  .ex-body { padding: 1.25rem 1.5rem; }
+
+  /* SENTENCE with blank */
+  .sentence {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  /* MULTIPLE CHOICE */
+  .choices {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .choice-btn {
+    background: var(--surface);
+    border: 1px solid var(--surface-3);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink-2);
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .choice-btn:hover:not(:disabled) {
+    background: var(--blue-light);
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  .choice-btn.correct {
+    background: var(--correct-light);
+    border-color: var(--correct);
+    color: var(--correct);
+    font-weight: 500;
+  }
+  .choice-btn.wrong {
+    background: var(--wrong-light);
+    border-color: var(--wrong);
+    color: var(--wrong);
+  }
+  .choice-btn:disabled { cursor: default; }
+  .choice-icon {
+    font-size: 14px;
+    flex-shrink: 0;
+    width: 18px;
+  }
+
+  /* FEEDBACK */
+  .feedback {
+    margin-top: 0.75rem;
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: var(--correct-light); color: #0e4028; }
+  .feedback.wrong-fb   { background: var(--wrong-light);   color: #6e1010; }
+  .feedback strong { font-weight: 500; }
+
+  /* TEXT INPUT exercises */
+  .fill-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 15px;
+    line-height: 2;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+  .fill-input {
+    font-family: var(--sans);
+    font-size: 14px;
+    border: none;
+    border-bottom: 2px solid var(--surface-3);
+    background: transparent;
+    padding: 2px 6px;
+    color: var(--ink);
+    outline: none;
+    min-width: 120px;
+    transition: border-color 0.15s;
+  }
+  .fill-input:focus { border-bottom-color: var(--accent); }
+  .fill-input.correct-input { border-bottom-color: var(--correct); color: var(--correct); }
+  .fill-input.wrong-input   { border-bottom-color: var(--wrong);   color: var(--wrong); }
+
+  .check-btn {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .check-btn:hover { opacity: 0.8; }
+  .check-btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* REORDER exercise */
+  .reorder-wrap { margin-bottom: 1rem; }
+  .word-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1rem;
+    min-height: 44px;
+    padding: 10px;
+    background: var(--surface-2);
+    border-radius: 8px;
+    border: 1px dashed var(--surface-3);
+  }
+  .answer-zone {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    border: 2px dashed var(--surface-3);
+    transition: border-color 0.15s;
+  }
+  .answer-zone.drag-over { border-color: var(--accent); }
+  .word-chip {
+    background: white;
+    border: 1px solid var(--surface-3);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 13px;
+    color: var(--ink);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .word-chip:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .word-chip.in-answer { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+  .zone-label {
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-bottom: 4px;
+    letter-spacing: 0.06em;
+  }
+
+  /* SCORE BAR */
+  .score-section {
+    background: white;
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+  }
+  .score-title {
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+  .score-num {
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--accent);
+    font-family: var(--serif);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .score-msg {
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+  .score-bar-wrap {
+    background: var(--surface-2);
+    border-radius: 100px;
+    height: 8px;
+    margin: 1rem 0;
+    overflow: hidden;
+  }
+  .score-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.8s ease;
+  }
+  .reset-btn {
+    font-family: var(--sans);
+    font-size: 13px;
+    background: transparent;
+    border: 1px solid var(--surface-3);
+    border-radius: 6px;
+    padding: 8px 20px;
+    cursor: pointer;
+    color: var(--ink-2);
+    margin-top: 0.75rem;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .reset-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* WRITING TASK */
+  .writing-card {
+    background: white;
+    border: 1px solid var(--surface-3);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  .writing-prompt {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  .writing-area {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--surface-3);
+    border-radius: 8px;
+    padding: 14px;
+    resize: vertical;
+    min-height: 120px;
+    outline: none;
+    line-height: 1.7;
+    transition: border-color 0.15s;
+  }
+  .writing-area:focus { border-color: var(--accent); }
+  .writing-hint {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-top: 8px;
+  }
+  .verb-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 0.75rem;
+  }
+  .verb-tag {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+
+  @media (max-width: 560px) {
+    .verb-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <p class="eyebrow">Homework · B2 / C1</p>
+  <h1 class="main-title">Phrasal Verbs<br><em>at work</em></h1>
+  <p class="subtitle">Practice the six phrasal verbs from the lesson — through multiple choice, gap fill, sentence building, and a writing task.</p>
+</header>
+
+<!-- VERB REFERENCE -->
+<div class="ref-box">
+  <p class="ref-title">Your verb bank — use these throughout the exercises</p>
+  <div class="verb-grid">
+    <div class="verb-item">
+      <span class="verb-name">dress up</span>
+      <span class="verb-meaning">to wear smart / formal clothes</span>
+    </div>
+    <div class="verb-item">
+      <span class="verb-name">stick to</span>
+      <span class="verb-meaning">to follow or keep to something (a plan, schedule)</span>
+    </div>
+    <div class="verb-item">
+      <span class="verb-name">take on</span>
+      <span class="verb-meaning">to accept or start new responsibilities</span>
+    </div>
+    <div class="verb-item">
+      <span class="verb-name">call off</span>
+      <span class="verb-meaning">to cancel something</span>
+    </div>
+    <div class="verb-item">
+      <span class="verb-name">get on with</span>
+      <span class="verb-meaning">to have a good relationship with someone</span>
+    </div>
+    <div class="verb-item">
+      <span class="verb-name">carry out</span>
+      <span class="verb-meaning">to do or complete a task</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- PART 1 — MULTIPLE CHOICE -->
+<section class="section">
+  <p class="section-label">Part 1 — multiple choice</p>
+  <p class="section-instruction">Choose the correct phrasal verb for each sentence. Click your answer to check immediately.</p>
+
+  <!-- Q1 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 1</div>
+    <div class="ex-body">
+      <p class="sentence">The client presentation was moved to a bigger venue, so everyone had to ________ for the occasion.</p>
+      <div class="choices" data-correct="dress up">
+        <button class="choice-btn" onclick="checkMC(this,'dress up','dress up')"><span class="choice-icon"></span>dress up</button>
+        <button class="choice-btn" onclick="checkMC(this,'take on','dress up')"><span class="choice-icon"></span>take on</button>
+        <button class="choice-btn" onclick="checkMC(this,'carry out','dress up')"><span class="choice-icon"></span>carry out</button>
+      </div>
+      <div class="feedback" id="fb-mc1"></div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 2</div>
+    <div class="ex-body">
+      <p class="sentence">We had to ________ the campaign launch because the assets weren't ready in time.</p>
+      <div class="choices" data-correct="call off">
+        <button class="choice-btn" onclick="checkMC(this,'get on with','call off')"><span class="choice-icon"></span>get on with</button>
+        <button class="choice-btn" onclick="checkMC(this,'call off','call off')"><span class="choice-icon"></span>call off</button>
+        <button class="choice-btn" onclick="checkMC(this,'stick to','call off')"><span class="choice-icon"></span>stick to</button>
+      </div>
+      <div class="feedback" id="fb-mc2"></div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 3</div>
+    <div class="ex-body">
+      <p class="sentence">She just joined the global team, so she's still trying to ________ her new colleagues in Europe and the US.</p>
+      <div class="choices" data-correct="get on with">
+        <button class="choice-btn" onclick="checkMC(this,'carry out','get on with')"><span class="choice-icon"></span>carry out</button>
+        <button class="choice-btn" onclick="checkMC(this,'take on','get on with')"><span class="choice-icon"></span>take on</button>
+        <button class="choice-btn" onclick="checkMC(this,'get on with','get on with')"><span class="choice-icon"></span>get on with</button>
+      </div>
+      <div class="feedback" id="fb-mc3"></div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 4</div>
+    <div class="ex-body">
+      <p class="sentence">The project manager is very reliable — she always ________ her tasks on time, even under pressure.</p>
+      <div class="choices" data-correct="carries out">
+        <button class="choice-btn" onclick="checkMC(this,'sticks to','carries out')"><span class="choice-icon"></span>sticks to</button>
+        <button class="choice-btn" onclick="checkMC(this,'carries out','carries out')"><span class="choice-icon"></span>carries out</button>
+        <button class="choice-btn" onclick="checkMC(this,'calls off','carries out')"><span class="choice-icon"></span>calls off</button>
+      </div>
+      <div class="feedback" id="fb-mc4"></div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 5</div>
+    <div class="ex-body">
+      <p class="sentence">He's ambitious and never afraid to ________ a challenging brief, even when the timeline is tight.</p>
+      <div class="choices" data-correct="take on">
+        <button class="choice-btn" onclick="checkMC(this,'dress up','take on')"><span class="choice-icon"></span>dress up</button>
+        <button class="choice-btn" onclick="checkMC(this,'take on','take on')"><span class="choice-icon"></span>take on</button>
+        <button class="choice-btn" onclick="checkMC(this,'get on with','take on')"><span class="choice-icon"></span>get on with</button>
+      </div>
+      <div class="feedback" id="fb-mc5"></div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 6</div>
+    <div class="ex-body">
+      <p class="sentence">The agency has been changing the scope constantly. We really need to ________ the original brief and stop making last-minute changes.</p>
+      <div class="choices" data-correct="stick to">
+        <button class="choice-btn" onclick="checkMC(this,'stick to','stick to')"><span class="choice-icon"></span>stick to</button>
+        <button class="choice-btn" onclick="checkMC(this,'take on','stick to')"><span class="choice-icon"></span>take on</button>
+        <button class="choice-btn" onclick="checkMC(this,'carry out','stick to')"><span class="choice-icon"></span>carry out</button>
+      </div>
+      <div class="feedback" id="fb-mc6"></div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- PART 2 — GAP FILL -->
+<section class="section">
+  <p class="section-label">Part 2 — gap fill</p>
+  <p class="section-instruction">Type the correct phrasal verb in the right form. Then click Check.</p>
+
+  <!-- GF1 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 7</div>
+    <div class="ex-body">
+      <div class="fill-wrap">
+        <span>The meeting was</span>
+        <input class="fill-input" id="gf1" placeholder="..." autocomplete="off" spellcheck="false">
+        <span>at the last minute because the director had a conflict.</span>
+      </div>
+      <button class="check-btn" onclick="checkFill('gf1', ['called off', 'called it off'], 'fb-gf1')">Check</button>
+      <div class="feedback" id="fb-gf1"></div>
+    </div>
+  </div>
+
+  <!-- GF2 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 8</div>
+    <div class="ex-body">
+      <div class="fill-wrap">
+        <span>I don't usually</span>
+        <input class="fill-input" id="gf2" placeholder="..." autocomplete="off" spellcheck="false">
+        <span>for work, but the Pilão brand event required a more formal look.</span>
+      </div>
+      <button class="check-btn" onclick="checkFill('gf2', ['dress up'], 'fb-gf2')">Check</button>
+      <div class="feedback" id="fb-gf2"></div>
+    </div>
+  </div>
+
+  <!-- GF3 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 9</div>
+    <div class="ex-body">
+      <div class="fill-wrap">
+        <span>Our team</span>
+        <input class="fill-input" id="gf3" placeholder="..." autocomplete="off" spellcheck="false">
+        <span>the market research carefully before presenting to the global stakeholders.</span>
+      </div>
+      <button class="check-btn" onclick="checkFill('gf3', ['carried out'], 'fb-gf3')">Check</button>
+      <div class="feedback" id="fb-gf3"></div>
+    </div>
+  </div>
+
+  <!-- GF4 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 10</div>
+    <div class="ex-body">
+      <div class="fill-wrap">
+        <span>She's been</span>
+        <input class="fill-input" id="gf4" placeholder="..." autocomplete="off" spellcheck="false">
+        <span>too many projects at once and is starting to feel overwhelmed.</span>
+      </div>
+      <button class="check-btn" onclick="checkFill('gf4', ['taking on'], 'fb-gf4')">Check</button>
+      <div class="feedback" id="fb-gf4"></div>
+    </div>
+  </div>
+
+  <!-- GF5 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 11</div>
+    <div class="ex-body">
+      <div class="fill-wrap">
+        <span>It can be hard to</span>
+        <input class="fill-input" id="gf5" placeholder="..." autocomplete="off" spellcheck="false">
+        <span>everyone on an international team — cultural differences always play a role.</span>
+      </div>
+      <button class="check-btn" onclick="checkFill('gf5', ['get on with'], 'fb-gf5')">Check</button>
+      <div class="feedback" id="fb-gf5"></div>
+    </div>
+  </div>
+
+  <!-- GF6 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 12</div>
+    <div class="ex-body">
+      <div class="fill-wrap">
+        <span>The key to delivering a consistent brand experience is to</span>
+        <input class="fill-input" id="gf6" placeholder="..." autocomplete="off" spellcheck="false">
+        <span>the brand guidelines, no matter who the client is.</span>
+      </div>
+      <button class="check-btn" onclick="checkFill('gf6', ['stick to'], 'fb-gf6')">Check</button>
+      <div class="feedback" id="fb-gf6"></div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- PART 3 — REORDER -->
+<section class="section">
+  <p class="section-label">Part 3 — put the words in order</p>
+  <p class="section-instruction">Click the words in the correct order to build the sentence. Click a word in the answer zone to send it back.</p>
+
+  <!-- RO1 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 13</div>
+    <div class="ex-body">
+      <div class="reorder-wrap" id="ro1-wrap">
+        <p class="zone-label">Words</p>
+        <div class="word-pool" id="ro1-pool"></div>
+        <p class="zone-label" style="margin-top:10px">Your sentence</p>
+        <div class="answer-zone" id="ro1-answer"></div>
+      </div>
+      <button class="check-btn" style="margin-top:8px" onclick="checkReorder('ro1', 'She always carries out her tasks carefully and on time')">Check</button>
+      <div class="feedback" id="fb-ro1"></div>
+    </div>
+  </div>
+
+  <!-- RO2 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 14</div>
+    <div class="ex-body">
+      <div class="reorder-wrap" id="ro2-wrap">
+        <p class="zone-label">Words</p>
+        <div class="word-pool" id="ro2-pool"></div>
+        <p class="zone-label" style="margin-top:10px">Your sentence</p>
+        <div class="answer-zone" id="ro2-answer"></div>
+      </div>
+      <button class="check-btn" style="margin-top:8px" onclick="checkReorder('ro2', 'I never call off a meeting unless there is a very serious reason')">Check</button>
+      <div class="feedback" id="fb-ro2"></div>
+    </div>
+  </div>
+
+  <!-- RO3 -->
+  <div class="ex-card">
+    <div class="ex-num">Question 15</div>
+    <div class="ex-body">
+      <div class="reorder-wrap" id="ro3-wrap">
+        <p class="zone-label">Words</p>
+        <div class="word-pool" id="ro3-pool"></div>
+        <p class="zone-label" style="margin-top:10px">Your sentence</p>
+        <div class="answer-zone" id="ro3-answer"></div>
+      </div>
+      <button class="check-btn" style="margin-top:8px" onclick="checkReorder('ro3', 'He is not afraid to take on new projects even if they are challenging')">Check</button>
+      <div class="feedback" id="fb-ro3"></div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- PART 4 — WRITING TASK -->
+<section class="section">
+  <p class="section-label">Part 4 — writing task</p>
+
+  <div class="writing-card">
+    <p class="writing-prompt">
+      Write 4–6 sentences about your own professional behaviour at work. Use <strong>at least four</strong> of the phrasal verbs from the lesson. Think about your real experience — working on brand projects, dealing with global teams, managing deadlines.
+    </p>
+    <div class="verb-tags">
+      <span class="verb-tag">dress up</span>
+      <span class="verb-tag">stick to</span>
+      <span class="verb-tag">take on</span>
+      <span class="verb-tag">call off</span>
+      <span class="verb-tag">get on with</span>
+      <span class="verb-tag">carry out</span>
+    </div>
+    <br>
+    <textarea class="writing-area" id="writing-area" placeholder="Write your sentences here...&#10;&#10;Example: I always try to stick to project timelines, even when briefs change at the last minute..."></textarea>
+    <p class="writing-hint">Tip: read it out loud when you finish — this helps you remember the verbs naturally.</p>
+  </div>
+</section>
+
+
+<!-- SCORE -->
+<div class="score-section" id="score-section" style="display:none">
+  <p class="score-title">Your score</p>
+  <p class="score-num" id="score-num">0/12</p>
+  <div class="score-bar-wrap"><div class="score-bar-fill" id="score-bar"></div></div>
+  <p class="score-msg" id="score-msg"></p>
+  <button class="reset-btn" onclick="resetAll()">Try again</button>
+</div>
+
+
+<script>
+  let correct = 0;
+  let total = 0;
+  const TOTAL_SCORABLE = 12;
+
+  /* ---- MULTIPLE CHOICE ---- */
+  function checkMC(btn, chosen, answer) {
+    const group = btn.closest('.choices');
+    if (group.dataset.done) return;
+    group.dataset.done = 'true';
+    const btns = group.querySelectorAll('.choice-btn');
+    btns.forEach(b => { b.disabled = true; });
+    const fb = btn.closest('.ex-body').querySelector('.feedback');
+    if (chosen === answer) {
+      btn.classList.add('correct');
+      btn.querySelector('.choice-icon').textContent = '\u2713';
+      fb.className = 'feedback show correct-fb';
+      fb.innerHTML = '<strong>Correct!</strong> "' + answer + '" is the right verb here.';
+      correct++;
+    } else {
+      btn.classList.add('wrong');
+      btn.querySelector('.choice-icon').textContent = '\u2717';
+      btns.forEach(b => { if (b.textContent.trim() === answer) { b.classList.add('correct'); b.querySelector('.choice-icon').textContent = '\u2713'; }});
+      fb.className = 'feedback show wrong-fb';
+      fb.innerHTML = '<strong>Not quite.</strong> The correct answer is <strong>"' + answer + '"</strong>.';
+    }
+    total++;
+    updateScore();
+  }
+
+  /* ---- FILL IN ---- */
+  function checkFill(inputId, accepted, fbId) {
+    const input = document.getElementById(inputId);
+    const fb = document.getElementById(fbId);
+    const val = input.value.trim().toLowerCase();
+    const ok = accepted.map(a => a.toLowerCase()).includes(val);
+    input.disabled = true;
+    input.closest('.ex-body').querySelector('.check-btn').disabled = true;
+    if (ok) {
+      input.classList.add('correct-input');
+      fb.className = 'feedback show correct-fb';
+      fb.innerHTML = '<strong>Correct!</strong> "' + input.value.trim() + '" — perfect.';
+      correct++;
+    } else {
+      input.classList.add('wrong-input');
+      fb.className = 'feedback show wrong-fb';
+      fb.innerHTML = '<strong>Not quite.</strong> The answer is <strong>"' + accepted[0] + '"</strong>.';
+    }
+    total++;
+    updateScore();
+  }
+
+  /* ---- REORDER ---- */
+  const reorderData = {
+    ro1: ['She', 'always', 'carries', 'out', 'her', 'tasks', 'carefully', 'and', 'on', 'time'],
+    ro2: ['I', 'never', 'call', 'off', 'a', 'meeting', 'unless', 'there', 'is', 'a', 'very', 'serious', 'reason'],
+    ro3: ['He', 'is', 'not', 'afraid', 'to', 'take', 'on', 'new', 'projects', 'even', 'if', 'they', 'are', 'challenging']
+  };
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function buildReorder(id) {
+    const words = shuffle(reorderData[id]);
+    const pool = document.getElementById(id + '-pool');
+    const answer = document.getElementById(id + '-answer');
+    pool.innerHTML = '';
+    answer.innerHTML = '';
+    words.forEach((w, i) => {
+      const chip = document.createElement('span');
+      chip.className = 'word-chip';
+      chip.textContent = w;
+      chip.dataset.word = w;
+      chip.onclick = () => moveToAnswer(chip, id);
+      pool.appendChild(chip);
+    });
+  }
+
+  function moveToAnswer(chip, id) {
+    const answer = document.getElementById(id + '-answer');
+    const pool = document.getElementById(id + '-pool');
+    if (chip.parentElement === pool) {
+      chip.classList.add('in-answer');
+      chip.onclick = () => moveToPool(chip, id);
+      answer.appendChild(chip);
+    }
+  }
+
+  function moveToPool(chip, id) {
+    const pool = document.getElementById(id + '-pool');
+    chip.classList.remove('in-answer');
+    chip.onclick = () => moveToAnswer(chip, id);
+    pool.appendChild(chip);
+  }
+
+  function checkReorder(id, correct_sentence) {
+    const answer = document.getElementById(id + '-answer');
+    const fb = document.getElementById('fb-' + id);
+    const chips = answer.querySelectorAll('.word-chip');
+    const built = Array.from(chips).map(c => c.dataset.word).join(' ');
+    const normalise = s => s.toLowerCase().replace(/[.,!?]/g, '').trim();
+    const wrap = answer.closest('.ex-body');
+    wrap.querySelector('.check-btn').disabled = true;
+    chips.forEach(c => { c.onclick = null; c.style.cursor = 'default'; });
+    document.getElementById(id + '-pool').querySelectorAll('.word-chip').forEach(c => { c.onclick = null; c.style.cursor = 'default'; });
+
+    if (normalise(built) === normalise(correct_sentence)) {
+      fb.className = 'feedback show correct-fb';
+      fb.innerHTML = '<strong>Correct!</strong> "' + correct_sentence + '"';
+      correct++;
+    } else {
+      fb.className = 'feedback show wrong-fb';
+      fb.innerHTML = '<strong>Not quite.</strong> The correct sentence is: <strong>"' + correct_sentence + '"</strong>';
+    }
+    total++;
+    updateScore();
+  }
+
+  function updateScore() {
+    if (total >= TOTAL_SCORABLE) {
+      const sec = document.getElementById('score-section');
+      sec.style.display = 'block';
+      const pct = Math.round((correct / TOTAL_SCORABLE) * 100);
+      document.getElementById('score-num').textContent = correct + ' / ' + TOTAL_SCORABLE;
+      setTimeout(() => {
+        document.getElementById('score-bar').style.width = pct + '%';
+      }, 100);
+      const msgs = [
+        [12, "Perfect score! You've really mastered these verbs."],
+        [10, "Excellent work! Just a couple to review."],
+        [8,  "Good effort! Go back and check the ones you missed."],
+        [0,  "Keep practising — try the exercise again and they'll stick!"]
+      ];
+      const msg = msgs.find(([min]) => correct >= min);
+      document.getElementById('score-msg').textContent = msg[1];
+      sec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function resetAll() {
+    location.reload();
+  }
+
+  /* init reorder */
+  buildReorder('ro1');
+  buildReorder('ro2');
+  buildReorder('ro3');
+
+
+</script>
+
+</body>
+</html>
